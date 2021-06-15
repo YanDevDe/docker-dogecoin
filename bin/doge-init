@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if ! [[ $IPADDR =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+   while true
+   do
+    printf "\033[0;31m$IPADDR is NOT valid! Please enter correct IP Address! \033[0m \n"
+    sleep 60
+   done
+fi
+
+echo ""
+echo "#################################"
+echo "#     Configuring the wallet    #"
+echo "#################################"
+echo ""
+echo "A .dogecoin folder will be created, unless it already exists."
+
+mkdir -p $DATA_PATH
+touch $CONFIG_PATH
+
+echo "Configuring the wallet"
+echo "#----" > $CONFIG_PATH
+echo "rpcuser=$(pwgen -s 16 1)" >> $CONFIG_PATH
+echo "rpcpassword=$(pwgen -s 64 1)" >> $CONFIG_PATH
+echo "rpcallowip=127.0.0.1" >> $CONFIG_PATH
+echo "rpcport=22555" >> $CONFIG_PATH
+echo "#----" >> $CONFIG_PATH
+echo "listen=1" >> $CONFIG_PATH
+echo "server=1" >> $CONFIG_PATH
+echo "daemon=1" >> $CONFIG_PATH
+echo "maxconnections=64" >> $CONFIG_PATH
+echo "#----" >> $CONFIG_PATH
+echo ""
+echo "externalip=$IPADDR" >> $CONFIG_PATH
+echo "disablewallet=1" >> $CONFIG_PATH
+echo "#----" >> $CONFIG_PATH

@@ -1,0 +1,26 @@
+[Unit]
+Description=Dogecoin Node
+After=network.target
+[Service]
+User=root
+Group=root
+Type=forking
+PIDFile=/Dogecoin/.dogecoin/dogecoin.pid
+ExecStart=/usr/local/bin/dogecoind  \
+            -daemon  \
+            -pid=/Dogecoin/.dogecoin/dogecoin.pid \
+            -datadir=/Dogecoin/.dogecoin  \
+            -conf=/Dogecoin/.dogecoin/dogecoin.conf
+ExecStop=/usr/local/bin/dogecoin-cli  \
+            -datadir=/Dogecoin/.dogecoin  \
+            -conf=/Dogecoin/.dogecoin/dogecoin.conf  \
+            stop
+Restart=always
+RestartSec=10m
+PrivateTmp=true
+TimeoutStopSec=7200s
+TimeoutStartSec=30s
+StartLimitInterval=15m
+StartLimitBurst=5
+[Install]
+WantedBy=multi-user.target

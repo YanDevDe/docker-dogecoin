@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo ""
+
+# If no configuration found - assume this is the first start. So we add config + add bootstrap
+if [[ ! -f "$CONFIG_PATH" ]]; then
+    echo "Setting up config"
+    systemctl stop dogecoin.service || true
+    doge-init
+fi
+
+# Start Service (after config + bootstrap is done if this happens)
+echo "Starting Dogecoin Node"
+systemctl enable dogecoin.service
+systemctl start dogecoin.service
+
+echo ""
+printf "\033[0;36m==== DOGECOIN FULL NODE LOGS ======================== \033[0m \n"
+echo ""
+
+# Only for debug purpose - remove that later
+while true; do dogecoin-cli -datadir=$DATA_PATH -conf=$CONFIG_PATH getblockcount; sleep 15; done
+
+/bin/bash
